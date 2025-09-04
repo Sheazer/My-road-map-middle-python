@@ -31,3 +31,35 @@ def contextmanager2():
 
 with contextmanager2():
     print("inside with block2")
+
+import time 
+
+class Timer():
+
+    def __enter__(self):
+        self.time = time.time()
+        return self
+    
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        print(f"Время выполнения блока: {time.time() - self.time} секунд")
+
+
+with Timer():
+    sum1 = 0
+    for i in range(10000000):
+        sum1 += i
+    print(sum1)
+
+
+@contextmanager
+def timer():
+    start = time.time()
+    try:
+        yield
+    finally:
+        print(f"Время выполнения блока: {time.time() - start:.4f} секунд")
+
+# Используем
+with timer():
+    total = sum(range(10000000))
+    print(total)
